@@ -1,29 +1,31 @@
-# SQLITE3 COMMANDS
+# SQLITE3 COMMANDS + USEFUL "NOSTR" QUERIES
 
-### Open db file:
+## Queries
+
+### open db file:
 ```
 sqlite3 database_file.db
 ```
 
-### Show all tables:
+### show all tables:
 
 ```sql
 sqlite> .tables
 event   tag   user_verification
 ```
 
-### List all databases and their associated files:
+### list all databases and their associated files:
 ```sql
 sqlite> .databases
 main: /embassy-data/package-data/volumes/nostr/data/main/nostr.db r/w
 ```
 
-### Show schema of all tables:
+### show schema of all tables:
 ```sql
 sqlite> .schema
 ```
 
-### Show schema of a table:
+### show schema of a table:
 ```sql
 sqlite> .schema event
 
@@ -40,14 +42,25 @@ CREATE INDEX tag_val_hex_index ON tag(value_hex);
 CREATE INDEX tag_composite_index ON tag(event_id,name,value_hex,value);
 CREATE INDEX tag_name_eid_index ON tag(name,event_id,value_hex);
 ```
-> NOTE: Must include ";" at the end of queries
-### Show contents of a table:
+> ⚠️ NOTE: Must include ";" at the end of queries ⚠️
+### select by date, order by date (show contents of a table):
 ```sql
 sqlite> select * from event;
 
 ...or...
 
 sqlite> select id, content, created_at, datetime(created_at,'unixepoch') from event where created_at > 1673579350 order by created_at desc limit 1;
+```
+
+### select NIP5 events (kind=0):
+```sql
+select datetime(created_at,'unixepoch'), content from event where kind=0 order by created_at desc;
+```
+
+
+### SELECT by "kind" and order by date (i.e kind=7 is similar to a like on twitter...shakaaa 🤙):
+```sql
+select id, content, created_at, datetime(created_at,'unixepoch') from event where kind=7 order by created_at desc;
 ```
 
 ### Insert a row in a table:
@@ -62,7 +75,7 @@ sqlite> INSERT OR REPLACE INTO VARS (name,value) VALUES('color', 'blue');
 
 ### Delete a table:
 ```sql
-sqlite> drop table ticket;
+sqlite> drop table event;
 ```
 
 ### Show execution time of a query:
@@ -75,4 +88,10 @@ sqlite> .timer OFF
 sqlite> select * from event;
 ...
 Run Time: real 0.326 user 0.000523 sys 0.000261
+```
+
+## EmbassyOS by Start9Labs
+If you have "nostr-rs-relay" installed on your EmbassyOS node you can query directly against the SQLite db
+```bash
+sqlite3 /embassy-data/package-data/volumes/nostr/data/main/nostr.db
 ```
