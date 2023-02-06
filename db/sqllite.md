@@ -90,6 +90,11 @@ sqlite> select * from event;
 Run Time: real 0.326 user 0.000523 sys 0.000261
 ```
 
+Clear the shell:
+```
+sqlite> .shell clear
+```
+
 ## EmbassyOS by Start9Labs
 If you have "nostr-rs-relay" installed on your EmbassyOS node you can query directly against the SQLite db
 ```bash
