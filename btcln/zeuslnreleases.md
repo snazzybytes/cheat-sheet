@@ -4,9 +4,9 @@
 - you can find the ZeusLN files on their release page (https://github.com/ZeusLN/zeus/releases):
 
 - PGP.txt
-- APK
-- APK signature (the .asc file)
-- Signed manifest
+- APK file
+- APK signature (manifest.txt)
+- Signed manifest (manifest.txt.sig)
 
 > Note: keep all files in the same directory when running below commands
 ---
@@ -18,34 +18,34 @@
     ```
     ```bash
     # verify it
-    gpg --verify zeus-v0.7.2.apk.asc zeus-v0.7.2.apk
+    gpg --verify manifest-v0.7.5.txt.sig manifest-v0.7.5.txt
 
     # should output something similar to this indicating "Good signature":
-    gpg: Signature made Tue Jan 31 20:54:47 2023 CST
+    gpg: Signature made Sun Apr 30 16:13:29 2023 CDT
     gpg:                using RSA key 96C225207F2137E278C31CF7AAC48DE8AB8DEE84
     gpg:                issuer "zeusln@tutanota.com"
     gpg: Good signature from "Zeus LN <zeusln@tutanota.com>" [full]
     ```
 
-- You can also check SHA256 sums of the release files using manifest.txt using the "shasum" command with "--check" option:
+- You can also check SHA256 sums of the release files using manifest.txt using the "shasum" command with "--check" option, and "--ignore-missing" option to ignore missing files noise:
     ```bash
-    shasum --check manifest-v0.7.2.txt
+    shasum --ignore-missing --check manifest-v0.7.5.txt
 
     # will output something similar to this:
-    zeus-v0.7.2.apk: OK
-    zeus-v0.7.2.apk.asc: OK
+    zeus-v0.7.5-arm64-v8a.apk: OK
     ```
 ---
 ### Bonus one liner instead of the above 🔥:
 ```bash
 # if you wanna do it faster 🤙 in single line
-gpg --verify zeus-v0.7.2.apk.asc zeus-v0.7.2.apk && shasum --check manifest-v0.7.2.txt
+gpg --verify manifest-v0.7.5.txt.sig manifest-v0.7.5.txt && echo "\n-------" && shasum --check --ignore-missing manifest-v0.7.5.txt
 
 # expected output
-gpg: Signature made Tue Jan 31 20:54:47 2023 CST
+gpg: Signature made Sun Apr 30 16:13:29 2023 CDT
 gpg:                using RSA key 96C225207F2137E278C31CF7AAC48DE8AB8DEE84
 gpg:                issuer "zeusln@tutanota.com"
 gpg: Good signature from "Zeus LN <zeusln@tutanota.com>" [full]
-zeus-v0.7.2.apk: OK
-zeus-v0.7.2.apk.asc: OK
+
+-------
+zeus-v0.7.5-arm64-v8a.apk: OK
 ```
